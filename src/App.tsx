@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { Intro } from "./components/Intro";
 import { Outro } from "./components/Outro";
 import { NumberInput } from "./components/NumberInput";
+import { useState } from "react";
 
 export const App = () => {
   const [a, setA] = useState(0);
