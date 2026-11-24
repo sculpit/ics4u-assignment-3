@@ -173,7 +173,7 @@ export const App = () => {
                 </div>
                 <div className="flex items-center justify-between border-slate-900 border-b px-1 py-3 transition hover:bg-slate-900/30">
                   <span className="text-slate-500">[max] critical point</span>
-                  <TextInput color="text-purple-400" value={`x: N/A | y: N/A`} />
+                  <TextInput color="text-purple-400" value={`x: ${minMax(a, b, c, d).maxX} | y: ${minMax(a, b, c, d).maxY}`} />
                 </div>
               </div>
             </section>
