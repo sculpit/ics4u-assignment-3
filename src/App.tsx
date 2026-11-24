@@ -30,6 +30,79 @@ export const App = () => {
     }
   }, [a, b, c, d, results]);
 
+  useEffect(() => {
+    const history = document.getElementById("history") as HTMLDivElement;
+    const form = document.getElementById("form") as HTMLFormElement;
+
+    if (!history || !form) {
+      return;
+    }
+
+    const saveItem = (a: number, b: number, c: number, d: number) => {
+      const div = document.createElement("div");
+
+      div.className = "flex items-center gap-2";
+      div.innerHTML = `
+        <button type="button" class="history-btn flex-1 text-left p-3 rounded-xl bg-slate-800/40 border border-slate-700 hover:bg-slate-800/70 transition" data-a="${a}" data-b="${b}" data-c="${c}" data-d="${d}">
+          <div class="grid grid-cols-4 font-mono text-slate-200 text-sm pointer-events-none">
+            <span class="text-center">a: ${a}</span>
+            <span class="text-center">b: ${b}</span>
+            <span class="text-center">c: ${c}</span>
+            <span class="text-center">d: ${d}</span>
+          </div>
+        </button>
+        <button type="button" class="delete-btn px-3 py-2 text-xs font-medium rounded-lg border border-red-500/30 text-red-400 bg-red-500/10 hover:bg-red-500/20 hover:text-red-300 transition">Delete</button>
+      `;
+
+      const historyText = document.getElementById("history-text");
+      if (historyText) {
+        historyText.innerText = "Click a row to load history.";
+      }
+      history.appendChild(div);
+    };
+
+    const formSubmit = (event: SubmitEvent) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+      const a = Number(formData.get("a"));
+      const b = Number(formData.get("b"));
+      const c = Number(formData.get("c"));
+      const d = Number(formData.get("d"));
+
+      saveItem(a, b, c, d);
+    };
+
+    const historyClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+
+      if (target.classList.contains("delete-btn")) {
+        target.closest("div")?.remove();
+        return;
+      }
+
+      const historyBtn = target.closest(".history-btn") as HTMLElement;
+      if (historyBtn && historyBtn.dataset) {
+        const a = Number(historyBtn.dataset.a);
+        const b = Number(historyBtn.dataset.b);
+        const c = Number(historyBtn.dataset.c);
+        const d = Number(historyBtn.dataset.d);
+
+        setA(a);
+        setB(b);
+        setC(c);
+        setD(d);
+      }
+    };
+
+    form.addEventListener("submit", formSubmit);
+    history.addEventListener("click", historyClick);
+
+    return () => {
+      form.removeEventListener("submit", formSubmit);
+      history.removeEventListener("click", historyClick);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#07090e] text-slate-200 antialiased selection:bg-cyan-500/20 selection:text-cyan-300">
       <div className="mx-auto w-full max-w-6xl space-y-12 px-4 py-16">
@@ -38,7 +111,7 @@ export const App = () => {
         <main className="space-y-12">
           <section className="relative overflow-hidden rounded-xl border border-slate-800 bg-[#0b0f19] p-6 shadow-2xl">
             <div className="absolute top-0 left-0 h-full w-1 bg-cyan-500"></div>
-            <form className="flex flex-wrap items-center justify-between gap-6" onSubmit={(e) => e.preventDefault()}>
+            <form id="form" className="flex flex-wrap items-center justify-between gap-6">
               <div className="flex flex-1 flex-wrap justify-start gap-4 sm:gap-6">
                 <NumberInput label="a-value [x³]" setValue={setA} value={a} />
                 <NumberInput label="b-value [x²]" setValue={setB} value={b} />
@@ -160,6 +233,16 @@ export const App = () => {
                   ref={canvasRef}
                   width="400"
                 ></canvas>
+              </div>
+            </section>
+            <section className="flex max-h-140 flex-col space-y-6">
+              <div className="flex items-center gap-4">
+                <h2 className="font-bold font-mono text-slate-500 text-xs uppercase tracking-widest">{"03 // HISTORY"}</h2>
+              </div>
+              <div className="custom-scrollbar flex-1 space-y-2 overflow-y-auto pr-2 font-mono text-slate-400 text-xs" id="history">
+                <h1 className="font-mono text-slate-500 text-sm italic" id="history-text">
+                  No saved equations yet.
+                </h1>
               </div>
             </section>
           </div>
