@@ -4,7 +4,7 @@ export const Outro = () => {
       <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
         <div className="space-y-1">
           <h3 className="font-bold text-slate-200 text-sm tracking-wide">Cubic Equation Solver</h3>
-          <p className="font-mono text-slate-500 text-xs">v2.0.0 - JavaScript + Tailwind CSS</p>
+          <p className="font-mono text-slate-500 text-xs">v3.0.0 - React + Tailwind CSS</p>
         </div>
         <div className="flex gap-8 font-mono text-slate-500 text-xs">
           <a className="transition hover:text-cyan-400" href="#">
