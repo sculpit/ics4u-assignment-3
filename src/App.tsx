@@ -14,12 +14,11 @@ export const App = () => {
   const [c, setC] = useState(0);
   const [d, setD] = useState(0);
 
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvas = useRef<HTMLCanvasElement>(null);
   const results = SolveCubic(a, b, c, d);
-  const localMinMax = minMax(a, b, c, d);
 
   useEffect(() => {
-    if (canvasRef.current) {
+    if (canvas.current) {
       drawGraph(
         { a, b, c, d },
         {
@@ -27,7 +26,7 @@ export const App = () => {
           r2: typeof results.x2 === "number" ? { x: results.x2 } : undefined,
           r3: typeof results.x3 === "number" ? { x: results.x3 } : undefined,
         },
-        canvasRef.current,
+        canvas.current,
       );
     }
   }, [a, b, c, d, results]);
@@ -115,10 +114,10 @@ export const App = () => {
             <div className="absolute top-0 left-0 h-full w-1 bg-cyan-500"></div>
             <form className="flex flex-wrap items-center justify-between gap-6" id="form">
               <div className="flex flex-1 flex-wrap justify-start gap-4 sm:gap-6">
-                <NumberInput label="a-value [x³]" setValue={setA} value={a} />
-                <NumberInput label="b-value [x²]" setValue={setB} value={b} />
-                <NumberInput label="c-value [x]" setValue={setC} value={c} />
-                <NumberInput label="d-value [c]" setValue={setD} value={d} />
+                <NumberInput label="a-value [x³]" name="a" setValue={setA} value={a} />
+                <NumberInput label="b-value [x²]" name="b" setValue={setB} value={b} />
+                <NumberInput label="c-value [x]" name="c" setValue={setC} value={c} />
+                <NumberInput label="d-value [c]" name="d" setValue={setD} value={d} />
               </div>
               <input
                 className="w-full cursor-pointer self-end rounded-md bg-cyan-500 px-6 py-3 text-center font-bold font-mono text-[#07090e] text-xs tracking-wider shadow-cyan-500/10 shadow-lg transition duration-150 hover:bg-cyan-400 active:scale-95 sm:w-auto sm:self-auto"
@@ -232,7 +231,7 @@ export const App = () => {
                 <canvas
                   className="w-full max-w-100 rounded-md border border-slate-900 bg-[#04060a] shadow-inner"
                   height="400"
-                  ref={canvasRef}
+                  ref={canvas}
                   width="400"
                 ></canvas>
               </div>
@@ -255,3 +254,5 @@ export const App = () => {
     </div>
   );
 };
+
+// history section is better if it's a component, red dots show up in wrong places, double saving, graph should be after history, factored form not done, text in history should move down as more saves are added and should change

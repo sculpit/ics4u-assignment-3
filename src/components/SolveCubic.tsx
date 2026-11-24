@@ -4,19 +4,19 @@ import type { Results } from "../types";
 export const SolveCubic = (a: number, b: number, c: number, d: number): Results => {
   if (a === 0) {
     return {
-      discriminant: "0.000",
-      p: "0.000",
-      q: "0.000",
-      roots: "0.000",
-      x1: "0.000",
-      x2: "0.000",
-      x3: "0.000",
-      y1: "0.000",
-      y2: "0.000",
-      y3: "0.000",
+      discriminant: "0.0000",
+      p: "0.0000",
+      q: "0.0000",
+      roots: "0.0000",
+      x1: "0.0000",
+      x2: "0.0000",
+      x3: "0.0000",
+      y1: "0.0000",
+      y2: "0.0000",
+      y3: "0.0000",
     };
   }
-  
+
   const p = (3 * a * c - b * b) / (3 * a * a);
   const q = (27 * a * a * d - 9 * a * b * c + 2 * b * b * b) / (27 * a * a * a);
   const discriminant = (q / 2) ** 2 + (p / 3) ** 3;
@@ -32,9 +32,9 @@ export const SolveCubic = (a: number, b: number, c: number, d: number): Results 
       x1: x1.toFixed(4),
       x2: x2.toFixed(4),
       x3: x3.toFixed(4),
-      y1: "0.000",
-      y2: "0.000",
-      y3: "0.000",
+      y1: "0.0000",
+      y2: "0.0000",
+      y3: "0.0000",
     };
   } else if (discriminant > EPS) {
     const { x1, roots } = caseB(h, discriminant, q);
@@ -100,5 +100,3 @@ const caseC = (h: number, p: number, q: number) => {
     return { roots: "Double Real Roots, Single Real Root", x1, x2, x3 };
   }
 };
-
-export const factoredForm = () => {};
