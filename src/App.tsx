@@ -5,6 +5,7 @@ import { Outro } from "./components/Outro";
 import { SolveCubic } from "./components/SolveCubic";
 import { TextInput } from "./components/TextInput";
 import { drawGraph } from "./utils/drawGraph";
+import { minMax } from "./utils/minMax";
 import { expandedPolynomial, firstDerivative, secondDerivative } from "./utils/summary";
 
 export const App = () => {
@@ -15,6 +16,7 @@ export const App = () => {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const results = SolveCubic(a, b, c, d);
+  const localMinMax = minMax(a, b, c, d);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -45,10 +47,10 @@ export const App = () => {
       div.innerHTML = `
         <button type="button" class="history-btn flex-1 text-left p-3 rounded-xl bg-slate-800/40 border border-slate-700 hover:bg-slate-800/70 transition" data-a="${a}" data-b="${b}" data-c="${c}" data-d="${d}">
           <div class="grid grid-cols-4 font-mono text-slate-200 text-sm pointer-events-none">
-            <span class="text-center">a: ${a}</span>
-            <span class="text-center">b: ${b}</span>
-            <span class="text-center">c: ${c}</span>
-            <span class="text-center">d: ${d}</span>
+            <span class="text-center">${a}</span>
+            <span class="text-center">${b}</span>
+            <span class="text-center">${c}</span>
+            <span class="text-center">${d}</span>
           </div>
         </button>
         <button type="button" class="delete-btn px-3 py-2 text-xs font-medium rounded-lg border border-red-500/30 text-red-400 bg-red-500/10 hover:bg-red-500/20 hover:text-red-300 transition">Delete</button>
@@ -111,7 +113,7 @@ export const App = () => {
         <main className="space-y-12">
           <section className="relative overflow-hidden rounded-xl border border-slate-800 bg-[#0b0f19] p-6 shadow-2xl">
             <div className="absolute top-0 left-0 h-full w-1 bg-cyan-500"></div>
-            <form id="form" className="flex flex-wrap items-center justify-between gap-6">
+            <form className="flex flex-wrap items-center justify-between gap-6" id="form">
               <div className="flex flex-1 flex-wrap justify-start gap-4 sm:gap-6">
                 <NumberInput label="a-value [x³]" setValue={setA} value={a} />
                 <NumberInput label="b-value [x²]" setValue={setB} value={b} />
@@ -167,7 +169,7 @@ export const App = () => {
                 </div>
                 <div className="flex items-center justify-between border-slate-900 border-b px-1 py-3 transition hover:bg-slate-900/30">
                   <span className="text-slate-500">[min] critical point</span>
-                  <TextInput color="text-cyan-400" value={`x: N/A | y: N/A`} />
+                  <TextInput color="text-cyan-400" value={`x: ${minMax(a, b, c, d).minX} | y: ${minMax(a, b, c, d).minY}`} />
                 </div>
                 <div className="flex items-center justify-between border-slate-900 border-b px-1 py-3 transition hover:bg-slate-900/30">
                   <span className="text-slate-500">[max] critical point</span>
@@ -228,7 +230,7 @@ export const App = () => {
               </div>
               <div className="flex flex-1 items-center justify-center rounded-xl border border-slate-900 bg-[#0b0f19]/50 bg-[radial-gradient(#1e293b_1px,transparent_1px)] bg-size-[16px_16px] p-6 shadow-2xl">
                 <canvas
-                  className="w-full max-w-[400px] rounded-md border border-slate-900 bg-[#04060a] shadow-inner"
+                  className="w-full max-w-100 rounded-md border border-slate-900 bg-[#04060a] shadow-inner"
                   height="400"
                   ref={canvasRef}
                   width="400"
